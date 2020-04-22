@@ -10,6 +10,7 @@ let createWebsocket = path => {
 } 
 
 
+
 client.on("connect", () => {	
     console.log("mqtt connected");
     client.subscribe(`${name}/b`);
@@ -21,9 +22,10 @@ client.on("message", (topic, payload) => {
     if (topic == `${name}/b`) {
         if (ws) ws.close()
 
-        let _ws = new WebSocket('ws://localhost:8080/stream/webrtc');
+        let _ws = new WebSocket('ws://localhost:8080/stream/webrtc'); 
         _ws.onopen = () => {
             console.log('_ws.onopen');
+            ws.send(payload.toString()); 
         };
 
         _ws.on('message', data => {
