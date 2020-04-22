@@ -6,28 +6,10 @@ let ws;
 let name = "nat";
 
 let createWebsocket = path => {
-    let _ws = new WebSocket(path);
-    _ws.onopen = () => {
-        console.log('_ws.onopen');
-    };
-
-    _ws.on('message', data => {
-        console.log(`_ws.message = `, data);
-        client.publish(`${name}/a`, data);
-    });
-
-
-    _ws.onclose = () => {
-        console.log('on close.')
-    }
-
-    _ws.onerror = () => {
-        console.log('on error.')
-    } 
     return _ws;
 } 
 
-ws = createWebsocket('ws://localhost:8080/stream/webrtc')
+let ws;
 
 
 client.on("connect", () => {	
@@ -35,9 +17,31 @@ client.on("connect", () => {
     client.subscribe(`${name}/b`);
 })
 
+
 client.on("message", (topic, payload) => {
     console.log(topic, payload.toString());
     if (topic == `${name}/b`) {
-        ws.send(payload.toString()); 
+        if (ws) ws.close()
+        
+        let _ws = new WebSocket('ws://localhost:8080/stream/webrtc');
+        _ws.onopen = () => {
+            console.log('_ws.onopen');
+        };
+
+        _ws.on('message', data => {
+            console.log(`_ws.message = `, data);
+            client.publish(`${name}/a`, data);
+        });
+
+
+        _ws.onclose = () => {
+            console.log('on close.')
+        }
+
+        _ws.onerror = () => {
+            console.log('on error.')
+        } 
+
+        ws = _ws;
     }
 })
