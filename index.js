@@ -6,7 +6,7 @@ let ws;
 let name = "nat";
 
 let createWebsocket = path => {
-    ws = new WebSocket(path);
+    let ws = new WebSocket(path);
     _ws.onopen = () => {
         console.log('_ws.onopen');
     };
