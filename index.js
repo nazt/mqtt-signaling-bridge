@@ -38,7 +38,7 @@ client.on("connect", () => {
 
 client.on("message", (topic, payload) => {
     console.log(topic, payload.toString());
-    if (topic == `${name}t/b`) {
+    if (topic == `${name}/b`) {
         ws.send(payload.toString()); 
     }
 })
