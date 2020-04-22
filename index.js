@@ -21,6 +21,7 @@ client.on("message", (topic, payload) => {
     console.log(topic, payload.toString());
     let payloadObject = JSON.parse(payload.toString());
     if (topic == `${name}/b`) {
+        console.log(payloadObject)
         if (payloadObject.what == "call") {
             if (ws) ws.close() 
             let _ws = new WebSocket('ws://localhost:8080/stream/webrtc'); 
