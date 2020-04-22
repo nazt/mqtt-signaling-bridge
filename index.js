@@ -3,12 +3,11 @@ const client = mqtt.connect("mqtt://mqtt.cmmc.io")
 const WebSocket = require('ws');
 
 let ws;
-let name = "nat";
+let name = process.env.DEVICE_NAME || "nat";
 
 let createWebsocket = path => {
     return _ws;
 } 
-
 
 
 client.on("connect", () => {	
