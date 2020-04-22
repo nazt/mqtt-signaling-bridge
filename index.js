@@ -16,32 +16,33 @@ client.on("connect", () => {
     client.subscribe(`${name}/b`);
 })
 
+// if (ws) ws.close()
+
+// let _ws = new WebSocket('ws://localhost:8080/stream/webrtc'); 
+// _ws.onopen = () => {
+//     console.log('_ws.onopen');
+//     ws.send(payload.toString()); 
+// };
+
+// _ws.on('message', data => {
+//     console.log(`_ws.message = `, data);
+//     client.publish(`${name}/a`, data);
+// });
+
+
+// _ws.onclose = () => {
+//     console.log('on close.')
+// }
+
+// _ws.onerror = () => {
+//     console.log('on error.')
+// } 
+
+// ws = _ws;
 
 client.on("message", (topic, payload) => {
     console.log(topic, payload.toString());
     if (topic == `${name}/b`) {
-        if (ws) ws.close()
 
-        let _ws = new WebSocket('ws://localhost:8080/stream/webrtc'); 
-        _ws.onopen = () => {
-            console.log('_ws.onopen');
-            ws.send(payload.toString()); 
-        };
-
-        _ws.on('message', data => {
-            console.log(`_ws.message = `, data);
-            client.publish(`${name}/a`, data);
-        });
-
-
-        _ws.onclose = () => {
-            console.log('on close.')
-        }
-
-        _ws.onerror = () => {
-            console.log('on error.')
-        } 
-
-        ws = _ws;
     }
 })
