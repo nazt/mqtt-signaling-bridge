@@ -5,7 +5,7 @@ const WebSocket = require('ws');
 
 const ws = new WebSocket('ws://localhost:8081/stream/webrtc');
 
-ws.onopen = open() => {
+ws.onopen = () => {
     console.log('ws.onopen');
 };
 
