@@ -9,9 +9,9 @@ let createWebsocket = path => {
     return _ws;
 } 
 
-
 client.on("connect", () => {	
     console.log("mqtt connected");
+    console.log("DEVICE_NAME ", name);
     client.subscribe(`${name}/b`);
 })
 
