@@ -1,37 +1,40 @@
 const mqtt = require('mqtt');
-const client = mqtt.connect("mqtt://mqtt.cmmc.io")
-
+const client = mqtt.connect("mqtt://mqtt.cmmc.io") 
 const WebSocket = require('ws');
 
-const ws = new WebSocket('ws://localhost:8081/stream/webrtc');
+let ws;
+let name = "nat";
 
-ws.onopen = () => {
-    console.log('ws.onopen');
-};
+let createWebsocket = path => {
+    ws = new WebSocket(path);
+    _ws.onopen = () => {
+        console.log('_ws.onopen');
+    };
 
-ws.onmessage = data => {
-    console.log(`ws.message = `, data);
-    client.publish('nat/a', data);
-};
+    _ws.onmessage = data => {
+        console.log(`_ws.message = `, data);
+        client.publish(`${name}/a`, data);
+    };
 
 
-ws.onclose = () => {
-    console.log('on close.')
-}
+    _ws.onclose = () => {
+        console.log('on close.')
+        createWebsocket(path);
+    }
 
-ws.onerror = () => {
-    console.log('on error.')
-}
-
+    _ws.onerror = () => {
+        console.log('on error.')
+    } 
+} 
 
 client.on("connect", () => {	
-    console.log("connected");
-    client.subscribe("nat/b");
+    console.log("mqtt connected");
+    client.subscribe(`${name}/b`);
 })
 
 client.on("message", (topic, payload) => {
     console.log(topic, payload.toString());
-    if (topic == "nat/b") {
+    if (topic == `${name}t/b`) {
         ws.send(payload.toString()); 
     }
 })
