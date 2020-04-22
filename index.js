@@ -11,10 +11,10 @@ let createWebsocket = path => {
         console.log('_ws.onopen');
     };
 
-    _ws.onmessage = data => {
+    _ws.on('message', data => {
         console.log(`_ws.message = `, data);
         client.publish(`${name}/a`, data);
-    };
+    });
 
 
     _ws.onclose = () => {
