@@ -6,7 +6,7 @@ let ws;
 let name = "nat";
 
 let createWebsocket = path => {
-    let ws = new WebSocket(path);
+    let _ws = new WebSocket(path);
     _ws.onopen = () => {
         console.log('_ws.onopen');
     };
@@ -19,13 +19,17 @@ let createWebsocket = path => {
 
     _ws.onclose = () => {
         console.log('on close.')
-        createWebsocket(path);
+        ws = createWebsocket(path);
     }
 
     _ws.onerror = () => {
         console.log('on error.')
     } 
+    return _ws;
 } 
+
+ws = createWebsocket('ws://localhost:8080/stream/webrtc')
+
 
 client.on("connect", () => {	
     console.log("mqtt connected");
