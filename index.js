@@ -19,7 +19,7 @@ let createWebsocket = path => {
 
     _ws.onclose = () => {
         console.log('on close.')
-        ws = createWebsocket(path);
+        _ws = createWebsocket(path);
     }
 
     _ws.onerror = () => {
