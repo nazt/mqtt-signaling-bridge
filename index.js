@@ -11,8 +11,11 @@ client.on("connect", () => {
     client.subscribe(`${name}/b`);
 })
 
-
-client.on("message", (topic, payload) => {
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+client.on("message", async (topic, payload) => {
     console.log(topic, payload.toString());
     let payloadObject = JSON.parse(payload.toString());
     if (topic == `${name}/b`) {
@@ -22,6 +25,7 @@ client.on("message", (topic, payload) => {
                 console.log('closing ws')
                 ws.close() 
             }
+            await delay(300);
             let _ws = new WebSocket('ws://localhost:8080/stream/webrtc'); 
             _ws.onopen = () => {
                 console.log('_ws.onopen');
