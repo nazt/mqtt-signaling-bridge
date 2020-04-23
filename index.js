@@ -1,52 +1,80 @@
+#!/usr/bin/env node
+
 const mqtt = require('mqtt');
-const client = mqtt.connect("mqtt://mqtt.cmmc.io") 
 const WebSocket = require('ws');
 
+const { program } = require('commander');
+
+program
+  .option('-d, --debug', 'output extra debugging')
+  .option('-c, --config <file>', 'add the specified config file');
+ 
+program.parse(process.argv);
+
+ 
+
+
+if (!program.config) {
+    if (program.debug) console.log(program.opts());
+    console.log('no config file');
+    process.exit(-1) 
+}
+
+
+const CONFIG = require(program.config); 
+CONFIG.FILE = program.config
+
+if (program.debug) {
+    console.log("Config File");
+    console.log(CONFIG);
+    console.log("------------");
+}
+
+const client = mqtt.connect(CONFIG.MQTT_HOST); 
+
+// let LOCAL_SIGNALING_SERVER = 'ws://localhost:8080/stream/webrtc'
+let LOCAL_SIGNALING_SERVER = 'ws://xy.humanist.cc/stream/webrtc'
+
 let ws;
-let name = process.env.DEVICE_NAME || "nat";
+let name = CONFIG.DEVICE_NAME;
+
+let createWebSocket = payload => {
+    let _ws = new WebSocket(LOCAL_SIGNALING_SERVER); 
+    _ws.onopen = () => {
+        console.log('_ws.onopen');
+        ws.send(payload.toString()); 
+    };
+
+    _ws.on('message', data => {
+        console.log(`_ws.message = `, data);
+        client.publish(`${name}/a`, data);
+    }); 
+
+    _ws.onclose = () => {
+        console.log('on close.')
+    }
+
+    _ws.onerror = () => {
+        console.log('on error.')
+    } 
+
+    return _ws;
+}
 
 client.on("connect", () => {	
-    console.log("mqtt connected");
-    console.log("DEVICE_NAME ", name);
+    // if (program.debug) { }
+    console.log('MQTT CONNECTED')
+    console.log("DEVICE_NAME", name);
     client.subscribe(`${name}/b`);
 })
 
-function delay(ms) {
-    console.log('delay', ms)
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-  
 client.on("message", async (topic, payload) => {
-    console.log(topic, payload.toString());
     let payloadObject = JSON.parse(payload.toString());
     if (topic == `${name}/b`) {
         console.log(payloadObject)
         if (payloadObject.what == "call") {
-            if (ws) {
-                console.log('closing ws')
-                ws.close() 
-            }
-            await delay(1000);
-            let _ws = new WebSocket('ws://localhost:8080/stream/webrtc'); 
-            _ws.onopen = () => {
-                console.log('_ws.onopen');
-                ws.send(payload.toString()); 
-            };
-
-            _ws.on('message', data => {
-                console.log(`_ws.message = `, data);
-                client.publish(`${name}/a`, data);
-            });
-
-
-            _ws.onclose = () => {
-                console.log('on close.')
-            }
-
-            _ws.onerror = () => {
-                console.log('on error.')
-            } 
-            ws = _ws; 
+            if (ws) ws.close() 
+            ws = createWebSocket(payload); 
         }
         else { 
              ws.send(payload.toString()); 

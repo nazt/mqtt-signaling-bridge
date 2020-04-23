@@ -46,6 +46,11 @@ callback-stream@^1.0.2:
     inherits "^2.0.1"
     readable-stream "> 1.0.0 < 3.0.0"
 
+commander@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-5.0.0.tgz#dbf1909b49e5044f8fdaf0adc809f0c0722bdfd0"
+  integrity sha512-JrDGPAKjMGSP1G0DUoaceEJ3DZgAfr/q6X7FVk4+U5KxUSKviYGM2k6zWkfyyBHy5rAtzgYJFa1ro2O9PtoxwQ==
+
 commist@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/commist/-/commist-1.1.0.tgz#17811ec6978f6c15ee4de80c45c9beb77cee35d5"
