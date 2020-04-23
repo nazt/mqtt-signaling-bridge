@@ -5,10 +5,6 @@ const WebSocket = require('ws');
 let ws;
 let name = process.env.DEVICE_NAME || "nat";
 
-let createWebsocket = path => {
-    return _ws;
-} 
-
 client.on("connect", () => {	
     console.log("mqtt connected");
     console.log("DEVICE_NAME ", name);
@@ -22,7 +18,10 @@ client.on("message", (topic, payload) => {
     if (topic == `${name}/b`) {
         console.log(payloadObject)
         if (payloadObject.what == "call") {
-            if (ws) ws.close() 
+            if (ws) {
+                console.log('closing ws')
+                ws.close() 
+            }
             let _ws = new WebSocket('ws://localhost:8080/stream/webrtc'); 
             _ws.onopen = () => {
                 console.log('_ws.onopen');
