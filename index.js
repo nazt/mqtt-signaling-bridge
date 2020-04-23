@@ -26,7 +26,7 @@ client.on("message", async (topic, payload) => {
                 console.log('closing ws')
                 ws.close() 
             }
-            await delay(300);
+            await delay(1000);
             let _ws = new WebSocket('ws://localhost:8080/stream/webrtc'); 
             _ws.onopen = () => {
                 console.log('_ws.onopen');
