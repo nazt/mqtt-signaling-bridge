@@ -14,3 +14,4 @@ add this line to /etc/apt/sources.list
   sudo apt update
   sudo apt upgrade
   sudo apt-get install uv4l uv4l-raspicam uv4l-server uv4l-webrtc uv4l-raspicam-extras
+  
