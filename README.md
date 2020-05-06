@@ -16,6 +16,9 @@ add this line to /etc/apt/sources.list
   sudo apt-get install uv4l uv4l-raspicam uv4l-server uv4l-webrtc uv4l-raspicam-extras
 ```
 
+```
+ sudo apt-get install uv4l-webrtc-armv6
+```
 
 ## Start
 
