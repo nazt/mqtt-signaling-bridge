@@ -3,11 +3,11 @@
 ## Preparation
 
     curl http://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
-  
+    
 add this line to /etc/apt/sources.list
 
-    deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main
-  
+    # deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main
+    echo 'deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main' | sudo tee -a /etc/apt/sources.list  
   
 ## UV4L Installation
 ```
