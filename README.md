@@ -1,4 +1,4 @@
-# mqtt-signaling-bridge
+# uv4l-mqtt-signaling-bridge
 
 ## Preparation
 
